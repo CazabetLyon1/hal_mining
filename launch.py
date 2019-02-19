@@ -2,6 +2,16 @@ import requests
 import json
 from pymongo import MongoClient
 
+def parseCursor(new_cursor):
+    str1 = ""
+    if new_cursor.find('=')!=-1:
+        str1=new_cursor.replace('=', '%3D').find
+    elif new_cursor.find('+')!=-1:
+        str1=new_cursor.replace('+', '%2B')
+    
+    else:
+        str1=str(new_cursor)
+    return str1
 
 ##MongoDB  Database creation 
 client = MongoClient("mongodb://localhost:27017/")
@@ -31,23 +41,19 @@ i=0
 str2=''
 
 
-while not quit :
-  
- 
+while cursor != jsons['nextCursorMark']:
+    
+    print(jsons['nextCursorMark']+" "+cursor)
+    print('\n')
     for item in jsons['response']['docs']:
-       #database add
-       print(item)
-       print('\n')
-       col.insert(item)
-    if cursor != jsons['nextCursorMark']:
-        #2nd request init
-        str2=jsons['nextCursorMark'].replace('=', "%3D")
-        url = url.replace(cursor, str2)
-        cursor =str2
-        r=requests.request('GET', url) 
-        jsons=json.loads(r.text)
-  
-    else:
-        quit=True   
+        #database add
+        col.insert_one(item)
+    #2nd request init
+    str2= parseCursor(jsons['nextCursorMark'])
+    url = url.replace(cursor, str2)
+    cursor = jsons['nextCursorMark']
+    r=requests.request('GET', url) 
+    jsons=json.loads(r.text)
+   
        
 client.close()
