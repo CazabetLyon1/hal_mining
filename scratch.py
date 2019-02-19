@@ -4,6 +4,7 @@ import json
 client = MongoClient("mongodb://localhost:27017/");
 print("Connection Successful")
 db = client.DATABASETEST
+col = db["articles"]
 
 #TEST DATABASE
 dblist = client.list_database_names()
@@ -14,7 +15,7 @@ if "DATABASETEST" in dblist:
 
 #TEST COLLECTION
 collist = db.list_collection_names()
-if "customers" in collist:
+if "articles" in collist:
   print("The collection exists.")
 
 
