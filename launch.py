@@ -1,17 +1,7 @@
 import requests
 import json
 from pymongo import MongoClient
-
-def parseCursor(new_cursor):
-    str1 = ""
-    if new_cursor.find('=')!=-1:
-        str1=new_cursor.replace('=', '%3D').find
-    elif new_cursor.find('+')!=-1:
-        str1=new_cursor.replace('+', '%2B')
-    
-    else:
-        str1=str(new_cursor)
-    return str1
+import urllib
 
 ##MongoDB  Database creation 
 client = MongoClient("mongodb://localhost:27017/")
@@ -36,24 +26,19 @@ url='https://api.archives-ouvertes.fr/search/?q=city_s:Lyon'+filtres+'&rows=1000
 
 r = requests.request('GET',url)
 jsons=json.loads(r.text)
-quit = False
-i=0
-str2=''
-
 
 while cursor != jsons['nextCursorMark']:
-    
-    print(jsons['nextCursorMark']+" "+cursor)
-    print('\n')
+  
     for item in jsons['response']['docs']:
         #database add
         col.insert_one(item)
     #2nd request init
-    str2= parseCursor(jsons['nextCursorMark'])
-    url = url.replace(cursor, str2)
-    cursor = jsons['nextCursorMark']
+    str2 = urllib.parse.quote(jsons['nextCursorMark'])
+    url= url.replace(cursor,str2)
+    cursor = str2
+
     r=requests.request('GET', url) 
     jsons=json.loads(r.text)
-   
+  
        
 client.close()
