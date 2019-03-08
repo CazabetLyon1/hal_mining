@@ -1,6 +1,7 @@
 import requests
 import json
 import urllib
+from urllib import parse as par
 from pymongo import MongoClient
 
 
@@ -29,25 +30,29 @@ url='https://api.archives-ouvertes.fr/search/?q=city_s:Lyon'+filtres+'&rows=1000
 r = requests.request('GET',url)
 jsons=json.loads(r.text)
 
-
-while cursor != jsons['nextCursorMark']:
+nxtCurs = urllib.parse.quote(jsons['nextCursorMark'])
+iteration=0
+while cursor != nxtCurs or iteration<1:
   
+   if (cursor==nxtCurs):
+       iteration+=1
+
    for item in jsons['response']['docs']:
-       
+          
        #database add    
        if col.count_documents({"docid": item['docid']}) == 0:
-           col.insert(item)
-           print("insert success")
-
-       else:
-           print('Ce document a déjà été ajouté')                   
+           col.insert_one(item)
+           print("insert success")          
   
    #2nd request init
-   tmpCurs = urllib.parse.quote(jsons['nextCursorMark'])
-   url= url.replace(cursor,tmpCurs)
-   cursor = tmpCurs
+   nxtCurs = urllib.parse.quote(jsons['nextCursorMark'])
+   
+   url= url.replace(cursor,nxtCurs)
+   cursor = nxtCurs
+   print("requete...")
    r=requests.request('GET', url) 
    jsons=json.loads(r.text)
+
 
 
 client.close()
