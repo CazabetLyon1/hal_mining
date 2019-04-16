@@ -4,6 +4,7 @@ const path = require('path')
 
 
 var liste5elem;
+var liste;
 
 var app = express();
 app.use(express.static("public"));
@@ -16,7 +17,7 @@ pythonProcess.stdout.on('data', function (data) {
     // console.log(liste5elem[0]);
     // console.log(liste5elem[1]);
 
-       //console.log(data.toString());
+       console.log(data.toString());
 });
 
 pythonProcess.stderr.on('data', (data) => {
@@ -27,20 +28,21 @@ pythonProcess.on('close', (code) => {
     console.log(`child process exited with code ${code}`);
 });
 
-// const pythonProcess2 = spawn('python3', ["./views/script.py", "liste" ]);
+const pythonProcess2 = spawn('python3', ["./views/script.py", "liste" ]);
 
-// pythonProcess2.stdout.on('data', function (data) {
-//     liste = JSON.parse(data.toString());
-//       console.log(data.toString());
-// });
+pythonProcess2.stdout.on('data', function (data) {
+    liste = JSON.parse(JSON.stringify(data));
+    console.log( typeof liste)
+    console.log(data.toString());
+});
 
-// pythonProcess2.stderr.on('data', (data) => {
-//    console.log(`stderr: ${data}`);
-// });
+pythonProcess2.stderr.on('data', (data) => {
+   console.log(`stderr: ${data}`);
+});
 
-// pythonProcess2.on('close', (code) => {
-//    console.log(`child process exited with code ${code}`);
-// });
+pythonProcess2.on('close', (code) => {
+   console.log(`child process exited with code ${code}`);
+});
 
 //console.log(pythonProcess);
 // ls.stdout.on('data', (data) => {
@@ -68,12 +70,12 @@ app.get('/accueil', function (req, res) {
 
 })
 
-// app.get('/liste', function (req, res) {
+app.get('/liste', function (req, res) {
 
-//     res.setHeader('Content-Type', 'text/html');
-//     res.render('liste.ejs',{liste : liste});
+    res.setHeader('Content-Type', 'text/html');
+    res.render('liste.ejs',{liste : liste});
 
-// })
+})
 
 app.listen(8080);
 

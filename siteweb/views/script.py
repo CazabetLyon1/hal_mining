@@ -2,6 +2,9 @@ from pymongo import MongoClient
 import json
 import random
 import sys
+from threading import Thread, Lock
+
+mutex = Lock()
 
 client = MongoClient("mongodb://localhost:27017/")
 #print("Connection Successful")
@@ -17,7 +20,7 @@ def fctListe():
             if y not in liste:
                 # print(x["labStructName_s"])
                 liste.append(y)
-    #print(liste)
+    # print(liste)
     return liste
 
 def fctListe5(l):
@@ -61,10 +64,14 @@ for arg in sys.argv:
         # liste5 = json.dumps(liste5)
         # listCollab = json.dumps(listCollab)
         # json.dumps([1, 2, 3, {'4': 5, '6': 7}], separators=(',', ':'))
+        mutex.acquire()
         print(json.dumps([liste5,json.dumps(listCollab)]))
+        mutex.release()
 
         # print(json.dumps('[','[',json.dumps(liste5), ':',json.dumps(listCollab),']',']' ),separators=(':')) 
         # print(lf) 
 
     if arg == "liste":
-        print(liste)
+        mutex.acquire()
+        print(json.dumps(liste))
+        mutex.release()
