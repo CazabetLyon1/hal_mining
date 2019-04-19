@@ -11,16 +11,16 @@
     <link rel="stylesheet" href="styles.css"-->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> 
-<script   src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
 
 
@@ -60,10 +60,9 @@
 
           <div class="form-group">
 
-            <input type="search" class="input-sm form-control" placeholder="Rechercher...">
+            <input type="search" id="searchI" class="input-sm form-control" placeholder="Rechercher...">
 
-            <button type="submit" class="btn btn-primary btn-sm">Chercher</button>
-
+            <button type="submit" id="searchB" class="btn btn-primary btn-sm" onclick="fctSearch()">Chercher</button>
           </div>
 
         </form>
@@ -77,48 +76,42 @@
     <div class="row">
       <div class="col-sm-6">
 
-        
-        <!-- <p><%= console.log(typeof liste5elem) %></p>
-        <p><%= console.log(typeof liste5elem[0]) %></p>
-        <p><%= console.log(typeof liste5elem[1]) %></p>
-        <p><%= console.log(typeof ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']) %></p> -->
-        
-        <!-- <p><%=  liste5elem %></p> -->
 
-        <!-- <p><%=  liste5elem[0] %></p-->
-        <!-- <p><%=  liste5elem[1] %></p> -->
+     
 
         <canvas id="myChart">
           <script>
-            // var liste5elem = <%-liste5elem[0]%>
-          var ctx = document.getElementById('myChart').getContext('2d');
-var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'bar',
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var chart = new Chart(ctx, {
+              // The type of chart we want to create
+              type: 'bar',
 
-    // The data for our dataset
-    data: {
-        labels:  <%-JSON.stringify(liste5elem[0])%> ,
-          //['Red,blue', 'Blue', 'Yellow', 'Green', 'Purple','Orange'] ,
-        datasets: [{ 
-            label: 'Nombre de publications',
-            backgroundColor: '#ff6600',
-            borderColor: '#FAA500',
-            data: <%-  liste5elem[1] %>,
-        }]
-    },
+              // The data for our dataset
+              data: {
+                labels:  <%- JSON.stringify(liste5elem[0]) %> ,
+                //['Red,blue', 'Blue', 'Yellow', 'Green', 'Purple','Orange'] ,
+                datasets: [{
+                  label: 'Nombre de publications',
+                  backgroundColor: '#ff6600',
+                  borderColor: "rgba(32, 162, 219, 0.3)",
+                  data: <%-  liste5elem[1] %>,
+                }]
+              },
 
-    // Configuration options go here
-    options: {}
-});</script>
+              
+
+              // Configuration options go here
+              options: {}
+            });
+          </script>
 
         </canvas>
-        
+
       </div>
       <div class="col-sm-3">
         <h3>Column 2</h3>
-        <p>Lorem ipsum dolor..</p>
-        <p>Ut enim ad..</p>
+        <p id="demo"></p>
+   
       </div>
       <div class="col-sm-3">
         <h3>Column 3</h3>
@@ -129,25 +122,63 @@ var chart = new Chart(ctx, {
   </div>
   <div class="container">
     <div class="row">
-      <div class="col-sm-4">
-        <h3>Column 4</h3>
-        <p id="texteJQ">
-          <p>
-            <p>Lorem ipsum dolor..</p>
-            <p>Ut enim ad..</p>
+      <div id= "listeC1" class="col-sm-4">
       </div>
-      <div class="col-sm-4">
-        <h3>Column 5</h3>
-        <p>Lorem ipsum dolor..</p>
-        <p>Ut enim ad..</p>
+      <div id= "listeC2" class="col-sm-4">
       </div>
-      <div class="col-sm-4">
-        <h3>Column 6</h3>
-        <p id="texteJQ1"></p>
+      <div id= "listeC3"class="col-sm-4">
+      </div>
+      <script> var liste;
+          liste = <%- JSON.stringify(liste) %>
+          console.log("typeList : " + typeof liste);
+          liste = liste.replace(/"/g,"'");
+          liste = liste.split(", \'");
+          liste = liste.sort();
+          var taille = Math.trunc(liste.length/3) ;
+          console.log(liste.length);
+          console.log(liste[0] + " holiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+  
+          var ul1 = document.createElement('ul');
+          var ul2 = document.createElement('ul');
+          var ul3 = document.createElement('ul');
+  
+          document.getElementById('listeC1').appendChild(ul1);
+          document.getElementById('listeC2').appendChild(ul2);
+          document.getElementById('listeC3').appendChild(ul3);
+  
+          for (let i = 0; i < taille; i++) {
+            liste[i] = liste[i].replace(/'/g," ");
+            var li = document.createElement('li');
+            ul1.appendChild(li);
+            li.innerHTML += "<a href = \"http://localhost:8080/"+ liste[i] +"\">"+ liste[i]+"</a>";
+          }
+          for (let i = taille; i < 2*taille; i++) {
+            liste[i] = liste[i].replace(/'/g," ");
+            var li = document.createElement('li');
+            ul2.appendChild(li);
+            li.innerHTML += "<a href = \"http://localhost:8080/"+ liste[i] +"\">"+ liste[i]+"</a>";
+          }
+          for (let i = 2*taille; i < 3*taille; i++) {
+            liste[i] = liste[i].replace(/'/g," ");
+            var li = document.createElement('li');
+            ul3.appendChild(li);
+            li.innerHTML += "<a href = \"http://localhost:8080/"+ liste[i] +"\">"+ liste[i]+"</a>";
+          }
 
-        <p>Lorem ipsum dolor..</p>
-        <p>Ut enim ad..</p>
-      </div>
+          function fctSearch() {
+            var search = document.getElementById("searchI").value;
+          
+            var result = liste.filter(elem => elem == search);
+            for (let i = 0; i < result.length; i++) {
+            var li = document.createElement('li');
+            ul3.appendChild(li);
+            li.innerHTML += "<a href = \"http://localhost:8080/"+ result[i] +"\">"+ result[i]+"</a>";
+          }
+
+          }
+
+        </script>
+    
     </div>
   </div>
 
@@ -155,7 +186,7 @@ var chart = new Chart(ctx, {
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
   <script src="JQuery.js"></script>
-  <script src ="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -164,8 +195,8 @@ var chart = new Chart(ctx, {
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
 
-    <script type="text/javascript" src="javaScript.js"></script> 
-  
+  <script type="text/javascript" src="javaScript.js"></script>
+
 </body>
 
 </html>

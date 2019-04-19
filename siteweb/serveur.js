@@ -10,12 +10,14 @@ var app = express();
 app.use(express.static("public"));
 
 const spawn = require("child_process").spawn;
-const pythonProcess = spawn('python3', ["./views/script.py", "liste5" ]);
+const pythonProcess = spawn('python3', ["./views/script.py", "liste5"]);
 
 pythonProcess.stdout.on('data', function (data) {
      liste5elem = JSON.parse(data.toString());
     // console.log(liste5elem[0]);
     // console.log(liste5elem[1]);
+              // var liste1 = liste.replace("\"", "'");
+
 
        console.log(data.toString());
 });
@@ -31,9 +33,9 @@ pythonProcess.on('close', (code) => {
 const pythonProcess2 = spawn('python3', ["./views/script.py", "liste" ]);
 
 pythonProcess2.stdout.on('data', function (data) {
-    liste = JSON.parse(JSON.stringify(data));
-    console.log( typeof liste)
-    console.log(data.toString());
+    liste = data.toString();
+    //console.log( typeof liste)
+    // console.log(data.toString());
 });
 
 pythonProcess2.stderr.on('data', (data) => {
@@ -43,6 +45,7 @@ pythonProcess2.stderr.on('data', (data) => {
 pythonProcess2.on('close', (code) => {
    console.log(`child process exited with code ${code}`);
 });
+
 
 //console.log(pythonProcess);
 // ls.stdout.on('data', (data) => {
@@ -66,7 +69,7 @@ pythonProcess2.on('close', (code) => {
 app.get('/accueil', function (req, res) {
 
     res.setHeader('Content-Type', 'text/html');
-    res.render('accueil.ejs',{liste5elem : liste5elem});
+    res.render('accueil.ejs',{liste5elem : liste5elem,liste : liste});
 
 })
 

@@ -53,9 +53,8 @@ def fctCollab5(l5):
 
 
 liste = fctListe()
-
 for arg in sys.argv:
-    
+        
     if arg == "liste5":
         liste5 = fctListe5(liste)
         #print(liste5)
@@ -73,5 +72,5 @@ for arg in sys.argv:
 
     if arg == "liste":
         mutex.acquire()
-        print(json.dumps(liste))
+        print(liste)
         mutex.release()
