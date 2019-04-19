@@ -3,6 +3,7 @@
 
 <head>
   <% include partials/head%>
+
 </head>
 
 <body>
@@ -14,13 +15,13 @@
   </header>
 
   <aside class="float-right bg-dark " style="position:relative;">
-    <table class="table-bordered border- mx-auto ">
-      <thead class="thead-dark">
+    <table class="table-bordered border- mx-auto text-white">
+      <thead class="thead-dark text-bold">
         <tr>
           <th scope="col">#</th>
           <th scope="col">mot-cl&eacute;</th>
         </tr>
-  
+
       </thead>
       <tbody>
         <tr>
@@ -31,8 +32,8 @@
             insertions python
           </td>
         </tr>
-  
-  
+
+
       </tbody>
     </table>
   </aside>
@@ -41,30 +42,55 @@
       <div class="col-sm-6">
 
 
-        
+
 
         <canvas id="myChart">
           <script>
             var ctx = document.getElementById('myChart').getContext('2d');
+            var data = {
+              labels:  <%- JSON.stringify(liste5elem[0]) %>,
+              //['Red,blue', 'Blue', 'Yellow', 'Green', 'Purple','Orange'] ,
+              datasets: [{
+                label: 'Nombre de publications',
+                data: <%-  liste5elem[1] %>,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(0, 255, 0, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(0, 255, 0, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+              }]
+            };
             var chart = new Chart(ctx, {
               // The type of chart we want to create
               type: 'bar',
 
               // The data for our dataset
-              data: {
-                labels:  <%- JSON.stringify(liste5elem[0]) %> ,
-                //['Red,blue', 'Blue', 'Yellow', 'Green', 'Purple','Orange'] ,
-                datasets: [{
-                  label: 'Nombre de publications',
-                  backgroundColor: '#ff6600',
-                  borderColor: '#FAA500',
-                  data: <%-  liste5elem[1] %>,
-                }]
-              },
+              data: data,
+
+
 
               // Configuration options go here
-              options: {}
-            });</script>
+              options: {
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true
+                    }
+                  }]
+                }
+              }
+            });
+          </script>
 
         </canvas>
 
@@ -72,7 +98,7 @@
       <div class="col-sm-3">
         <h3>Column 2</h3>
         <p id="demo"></p>
-   
+
       </div>
       <div class="col-sm-3">
         <h3>Column 3</h3>
@@ -81,68 +107,9 @@
       </div>
     </div>
   </div>
-  <div class="container">
-    <div class="row">
-      <div id= "listeC1" class="col-sm-4">
-      </div>
-      <div id= "listeC2" class="col-sm-4">
-      </div>
-      <div id= "listeC3"class="col-sm-4">
-      </div>
-      <script> var liste;
-          liste = <%- JSON.stringify(liste) %>
-          console.log("typeList : " + typeof liste);
-          liste = liste.replace(/"/g,"'");
-          liste = liste.split(", \'");
-          liste = liste.sort();
-          var taille = Math.trunc(liste.length/3) ;
-          console.log(liste.length);
-          console.log(liste[0] + " holiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-  
-          var ul1 = document.createElement('ul');
-          var ul2 = document.createElement('ul');
-          var ul3 = document.createElement('ul');
-  
-          document.getElementById('listeC1').appendChild(ul1);
-          document.getElementById('listeC2').appendChild(ul2);
-          document.getElementById('listeC3').appendChild(ul3);
-  
-          for (let i = 0; i < taille; i++) {
-            liste[i] = liste[i].replace(/'/g," ");
-            var li = document.createElement('li');
-            ul1.appendChild(li);
-            li.innerHTML += "<a href = \"http://localhost:8080/"+ liste[i] +"\">"+ liste[i]+"</a>";
-          }
-          for (let i = taille; i < 2*taille; i++) {
-            liste[i] = liste[i].replace(/'/g," ");
-            var li = document.createElement('li');
-            ul2.appendChild(li);
-            li.innerHTML += "<a href = \"http://localhost:8080/"+ liste[i] +"\">"+ liste[i]+"</a>";
-          }
-          for (let i = 2*taille; i < 3*taille; i++) {
-            liste[i] = liste[i].replace(/'/g," ");
-            var li = document.createElement('li');
-            ul3.appendChild(li);
-            li.innerHTML += "<a href = \"http://localhost:8080/"+ liste[i] +"\">"+ liste[i]+"</a>";
-          }
 
-          function fctSearch() {
-            var search = document.getElementById("searchI").value;
-          
-            var result = liste.filter(elem => elem == search);
-            for (let i = 0; i < result.length; i++) {
-            var li = document.createElement('li');
-            ul3.appendChild(li);
-            li.innerHTML += "<a href = \"http://localhost:8080/"+ result[i] +"\">"+ result[i]+"</a>";
-          }
 
-          }
-
-        </script>
-    
-    </div>
-  
-</div>
+  </div>
 
 
   <footer height="50%">
@@ -158,8 +125,9 @@
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-
-  <script type="text/javascript" src="javaScript.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+  <script type="text/javascript" src="http://www.chartjs.org/assets/Chart.js">
+  </script>
 
 </body>
 

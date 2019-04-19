@@ -76,16 +76,16 @@ app.get('/', function (req, res) {
 }).get('/listeStructures', function (req, res) {
 
     res.setHeader('Content-Type', 'text/html');
-    res.render('liste.ejs', { liste: liste5elem });
+    res.render('liste.ejs', { liste: liste });
 
 })
 
-.get("/structure", function (req, resp) {
+.get("/:structure", function (req, resp) {
         if (resp.statusCode != 200) {
             resp.send("bruh");
         }
         else {
-            resp.render("structure.ejs", {});
+            resp.render("structure.ejs", {struct : req.params.structure});
         }
 
 

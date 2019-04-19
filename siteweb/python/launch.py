@@ -25,7 +25,7 @@ filtres ='&fl=docid, title_s,docType_s,authFullName_s, ePublicationDate_tdate, d
 
 cursor= "*"
 
-url='https://api.archives-ouvertes.fr/search/?q=city_s:Lyon'+filtres+'&rows=100&sort=docid%20asc&cursorMark='+cursor
+url='https://api.archives-ouvertes.fr/search/?q=city_s:Lyon'+filtres+'&rows=10000&sort=docid%20asc&cursorMark='+cursor
 
 r = requests.request('GET',url)
 jsons=json.loads(r.text)
