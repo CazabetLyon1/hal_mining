@@ -25,36 +25,33 @@ filtres ='&fl=docid, title_s,docType_s,authFullName_s, ePublicationDate_tdate, d
 
 cursor= "*"
 
-url='https://api.archives-ouvertes.fr/search/?q=city_s:Lyon'+filtres+'&rows=10000&sort=docid%20asc&cursorMark='+cursor
+url='https://api.archives-ouvertes.fr/search/?q=city_s:Lyon'+filtres+'&rows=100&sort=docid%20asc&cursorMark='+cursor
 
 r = requests.request('GET',url)
 jsons=json.loads(r.text)
 
 nxtCurs = urllib.parse.quote(jsons['nextCursorMark'])
 iteration=0
-while cursor != nxtCurs or iteration<1:
-  
-   if (cursor==nxtCurs):
-       iteration+=1
-
-   for item in jsons['response']['docs']:
-          
-       #database add    
-       if col.count_documents({"docid": item['docid']}) == 0:
-           col.insert_one(item)
-           print("insert success")          
-  
-   #2nd request init
-   nxtCurs = urllib.parse.quote(jsons['nextCursorMark'])
-   
-   url= url.replace(cursor,nxtCurs)
-   cursor = nxtCurs
-   print("requete...")
-   r=requests.request('GET', url) 
-   jsons=json.loads(r.text)
 
 
+while (cursor != nxtCurs or iteration<1):
+    if (cursor==nxtCurs):
+        iteration+=1
+    for item in jsons['response']['docs']:
+        #database add    
+        if col.find_one({"docid": item['docid']})== None:
+            col.insert_one(item)
+            print("insert success")          
+    
+    #2nd request init
+    nxtCurs = urllib.parse.quote(jsons['nextCursorMark'])
+    url= url.replace(cursor,nxtCurs)
+    cursor = nxtCurs
+    print("requete...")
+    r=requests.request('GET', url) 
+    jsons=json.loads(r.text)
 
+print(jsons['response']['numFound'])
 client.close()
 
 

@@ -21,7 +21,7 @@ collist = db.list_collection_names()
 if "articles" in collist:
     print("The collection exists.")
 ## init requete
-filtres ='&fl=docid, title_s,docType_s,authFullName_s, ePublicationDate_tdate, domain_s, domainAllCode_s, labStructName_s, languages_s'
+filtres ='&fl=docid, title_s,docType_s,authFullName_s, ePublicationDate_tdate, domain_s, domainAllCode_s, structName_s, languages_s'
 
 cursor= "*"
 

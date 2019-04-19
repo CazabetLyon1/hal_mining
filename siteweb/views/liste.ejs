@@ -3,40 +3,16 @@
       <html>
       
       <head>
-        <!-- Required meta tags -->
-        <!--meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      
-          <!-- Bootstrap CSS -->
-        <!--link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-          <link rel="stylesheet" href="styles.css"-->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-         <!-- Latest compiled and minified CSS -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-      
-      <!-- jQuery library -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      
-      <!-- Latest compiled JavaScript -->
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> 
-      <script   src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-      
-      
-      
-      
-      
-        <title>sitelyon1</title>
+       <% include partials/head%>
       </head>
       
       <body>
       
       
         <!--div class="jumbotron text-center" -->
-        <div class="container">
-          <img src="bandeau.jpg" style="position:relative;" width="100%" cellpadding="0" alt="bandeau_hal_univlyon1" />
-        </div>
+        <header>
+          <% include partials/header%>
+        </header>
       
         <div class="container">
       
@@ -47,7 +23,7 @@
       
               <ul class="nav navbar-nav">
       
-                <li class="active"> <a href="#">Accueil</a> </li>
+                <li class="active"> <a href="acceuil">Accueil</a> </li>
       
                 <li> <a href="#">Liens</a> </li>
       
@@ -126,7 +102,9 @@
             </div>
           </div>
         </div>
-      
+      <footer>
+        <% include partials/footer %>
+      </footer>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
       
