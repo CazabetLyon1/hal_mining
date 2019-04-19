@@ -29,6 +29,8 @@ pythonProcess.stdout.on('data', function (data) {
     liste5elem = JSON.parse(data.toString());
     // console.log(liste5elem[0]);
     // console.log(liste5elem[1]);
+              // var liste1 = liste.replace("\"", "'");
+
 
     console.log(data.toString());
 
@@ -45,9 +47,9 @@ pythonProcess.on('close', (code) => {
 const pythonProcess2 = spawn('python3', [path.join(__dirname,"python/script.py"), "liste"]);
 
 pythonProcess2.stdout.on('data', function (data) {
-    liste = JSON.parse(JSON.stringify(data));
-    console.log(typeof liste)
-    console.log(data.toString());
+    liste = data.toString();
+    //console.log( typeof liste)
+    // console.log(data.toString());
 });
 
 pythonProcess2.stderr.on('data', (data) => {
@@ -69,7 +71,7 @@ pythonProcess2.on('close', (code) => {
 app.get('/', function (req, res) {
 
     res.setHeader('Content-Type', 'text/html');
-    res.render('accueil.ejs', { liste5elem: liste5elem });
+    res.render('accueil.ejs',{liste5elem : liste5elem,liste : liste});
 
 }).get('/listeStructures', function (req, res) {
 
