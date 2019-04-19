@@ -49,21 +49,21 @@
         liste[i] = liste[i].replace(/'/g, " ");
         /*var a = document.createElement('a');
         ul1.appendChild(li);*/
-        ul1.innerHTML += "<a class=\"list-group-item \" href = \"http://localhost:8080/" + liste[i] + "\">" + liste[i] + "</a>";
+        ul1.innerHTML += "<a class=\"list-group-item \" href = \"http://localhost:8080/structure/" + liste[i] + "\">" + liste[i] + "</a>";
       }
       for (let i = taille; i < 2 * taille; i++) {
         liste[i] = liste[i].replace(/'/g, " ");
         /*var li = document.createElement('li');
         li.setAttribute('class', 'list-group-item');
         ul2.appendChild(li);*/
-        ul2.innerHTML += "<a class=\"list-group-item \" href = \"http://localhost:8080/" + liste[i] + "\">" + liste[i] + "</a>";
+        ul2.innerHTML += "<a class=\"list-group-item \" href = \"http://localhost:8080/structure/" + liste[i] + "\">" + liste[i] + "</a>";
       }
       for (let i = 2 * taille; i < 3 * taille; i++) {
         liste[i] = liste[i].replace(/'/g, " ");
         /*var li = document.createElement('li');
         li.setAttribute('class', 'list-group-item');
         ul3.appendChild(li);*/
-        ul3.innerHTML += "<a class=\"list-group-item \" href = \"http://localhost:8080/" + liste[i] + "\">" + liste[i] + "</a>";
+        ul3.innerHTML += "<a class=\"list-group-item \" href = \"http://localhost:8080/structure/" + liste[i] + "\">" + liste[i] + "</a>";
       }
 
       function fctSearch() {
@@ -86,9 +86,11 @@
 
 
 
-    <footer>
-      <% include partials/footer %>
-    </footer>
+<footer class="container hidden-bottom mx-auto">
+    <% include partials/footer%>
+
+ </footer>
+    
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
