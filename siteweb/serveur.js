@@ -80,12 +80,13 @@ app.get('/', function (req, res) {
 
 })
 
-.get("/:structure", function (req, resp) {
-        if (resp.statusCode != 200) {
-            resp.send("bruh");
+.get("/structure/:name", function (req, res) {
+        if (res.statusCode != 200) {
+            res.send("bruh");
         }
         else {
-            resp.render("structure.ejs", {struct : req.params.structure});
+			//res.end('Vous êtes à la chambre de l\'étage n°' + req.params.name);
+            res.render("structure.ejs", {struct : req.params.structure, nbPublications : "7"});
         }
 
 
