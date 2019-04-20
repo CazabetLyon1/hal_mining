@@ -14,13 +14,23 @@ col = db["articles"]
 
 def fctListe():
     liste = []
-    for x in col.find({"labStructName_s": {'$exists': 1}}):
-        for y in x["labStructName_s"]:
-            # print(x["labStructName_s"])
-            if y not in liste:
+    for x in col.find({"labStructName_s": {'$exists': 1},  "labStructAddress_s": {'$exists': 1}}):
+        tabLab = x["labStructName_s"]
+        tabAddress = x["labStructAddress_s"]
+        tailleLab = len(tabLab)
+        tailleAddress = len(tabAddress)
+        if tailleLab == tailleAddress:
+            for i in range(0,tailleLab):
                 # print(x["labStructName_s"])
-                liste.append(y)
-    # print(liste)
+                if tabLab[i] not in liste:
+                    # print(x["labStructName_s"])
+                    try:
+                        b1 = tabAddress[i].find('Lyon')
+                        b2 = tabAddress[i].find('Villeurbanne')
+                        if b1 != -1 or b2 != -1:
+                            liste.append(tabLab[i])
+                    except IndexError:
+                        print("error")
     return liste
 
 def fctListe5(l):

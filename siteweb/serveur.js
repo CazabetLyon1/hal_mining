@@ -24,7 +24,7 @@ init.stderr.on('data', (data) => {
 init.on('close', (code) => {
     console.log(`child proc init terminé avec code ${code}`)
 });
-const pythonProcess = spawn('python3', [path.join(__dirname,"python/script.py"), "liste5"]);
+const pythonProcess = spawn('python3', [path.join(__dirname,"python/nbPublications.py"), "liste5"]);
 pythonProcess.stdout.on('data', function (data) {
     liste5elem = JSON.parse(data.toString());
     // console.log(liste5elem[0]);
@@ -44,7 +44,7 @@ pythonProcess.on('close', (code) => {
     console.log(`child process exited with code ${code}`);
 });
 
-const pythonProcess2 = spawn('python3', [path.join(__dirname,"python/script.py"), "liste"]);
+const pythonProcess2 = spawn('python3', [path.join(__dirname,"python/nbPublications.py"), "liste"]);
 
 pythonProcess2.stdout.on('data', function (data) {
     liste = data.toString();
