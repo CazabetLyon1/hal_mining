@@ -13,10 +13,15 @@ sudo apt-get install nodejs npm
 
 README
 Scripts --> scripts Python ayant servi pour créer des fichiers JSON exploités pour la visualisation
+
 Siteweb --> Tout ce qui est nécessaire à l'application Web
+
 	|views --> pages html + partials (header, footer)
+
 	|python --> scripts lancés côté serveur
+
 	|public --> data + images
+
 	|nodes_modules --> modules NodeJS nécessaires au projet
 
 ## Utilisation
