@@ -12,6 +12,7 @@ sudo apt-get install nodejs npm
 ## Composition
 
 README
+
 Scripts --> scripts Python ayant servi pour créer des fichiers JSON exploités pour la visualisation
 
 Siteweb --> Tout ce qui est nécessaire à l'application Web
