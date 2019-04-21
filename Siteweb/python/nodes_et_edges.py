@@ -29,7 +29,7 @@ for x in col.find({ "labStructName_s": { '$exists': 1 }, "labStructAddress_s": {
                 indice = listeLabTotal.index(tabLab[i])
                 listeNbPubli[indice] += 1
 
-fichier = open('/home/vayawen/Documents/LIFPROJET/rc2/structName.json','w')
+fichier = open('public/donnees_graphe.json','w')
 
 tabEdges = []
 for x in col.find({ "labStructName_s": { '$exists': 1 }, "labStructAddress_s": {'$exists': 1} }):

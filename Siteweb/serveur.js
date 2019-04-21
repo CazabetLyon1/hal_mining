@@ -7,79 +7,168 @@ var liste5elem;
 var liste;
 
 var app = express();
+app.listen(port, () => console.log(`serveur en ecoute sur le port ${port} !`));
 app.use(express.static(path.join(__dirname,'public')));
 app.set('views', __dirname+"/views")
 app.set('view engine', 'ejs');
 
-const spawn = require("child_process").spawn;
-
-const init = spawn('python3', [path.join(__dirname,"python/launch.py")]);
-
-init.stdout.on('data', (data) => {
-    console.log("initialisation terminée");
-});
-init.stderr.on('data', (data) => {
-    console.error(`${data}`);
-});
-init.on('close', (code) => {
-    console.log(`child proc init terminé avec code ${code}`)
-});
-const pythonProcess = spawn('python3', [path.join(__dirname,"python/nbPublications.py"), "liste5"]);
-pythonProcess.stdout.on('data', function (data) {
-    liste5elem = JSON.parse(data.toString());
-    // console.log(liste5elem[0]);
-    // console.log(liste5elem[1]);
-              // var liste1 = liste.replace("\"", "'");
+var spawn = require("child_process").spawn;
 
 
-    console.log(data.toString());
+//Pour tester si on a déja importer les données sur la BD
+function dejaInitialise() {
 
-});
+	return new Promise((resolve, reject) => {
 
-pythonProcess.stderr.on('data', (data) => {
-    console.log(`stderr: ${data}`);
-});
+		const test = spawn('python3', [path.join(__dirname,"python/dejaInitialise.py")]);
+		test.stdout.on('data', function (data) {
+				
+			dejaInit = data.toString();
+		});
+		test.on('close', function(code) {
+			resolve(dejaInit)
+		});
+		test.on('error', function(err) { reject(err) })
+	})
+}
 
-pythonProcess.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
-});
+//Choisis 5 labo aléatoires
+function script1() {
 
-const pythonProcess2 = spawn('python3', [path.join(__dirname,"python/nbPublications.py"), "liste"]);
+	return new Promise((resolve, reject) => {
+		
+		const pythonProcess = spawn('python3', [path.join(__dirname,"python/nbPublications.py"), "liste5"]);
+		var result = ''
 
-pythonProcess2.stdout.on('data', function (data) {
-    liste = data.toString();
-    //console.log( typeof liste)
-    // console.log(data.toString());
-});
+		pythonProcess.stdout.on('data', function (data) {
+			
+			liste5elem = JSON.parse(data.toString());
+			// console.log(liste5elem[0]);
+			// console.log(liste5elem[1]);
+		    // var liste1 = liste.replace("\"", "'");
+			console.log(data.toString());
+		});
+		pythonProcess.on('close', function(code) {
+			resolve(result)
+		});
+		pythonProcess.on('error', function(err) { reject(err) })
+	})
+}
 
-pythonProcess2.stderr.on('data', (data) => {
-    console.log(`stderr: ${data}`);
-});
+//Liste tous les labos
+function script2() {
 
-pythonProcess2.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
-});
+	return new Promise((resolve, reject) => {
+		
+		const pythonProcess2 = spawn('python3', [path.join(__dirname,"python/nbPublications.py"), "liste"]);
+		var result = ''
+
+		pythonProcess2.stdout.on('data', function (data) {
+			liste = data.toString();
+			//console.log( typeof liste)
+			//console.log(data.toString());
+		});
+		pythonProcess2.on('close', function(code) {
+			resolve(result)
+		});
+		pythonProcess2.on('error', function(err) { reject(err) })
+	})
+}
+
+//Supprime les articles mal renseignés et edite les informations de collaborations
+function graphe() {
+
+	return new Promise((resolve, reject) => {
+
+		const json_graphe = spawn('python3', [path.join(__dirname,"python/nodes_et_edges.py")]);
+		var result = ''
+
+		json_graphe.stdout.on('data', (data) => {
+		});
+		json_graphe.on('close', function(code) {
+			resolve(result)
+		});
+        json_graphe.on('error', function(err) { reject(err) })
+	})
+}
+
+//Importe les données dans la BD
+function initialisation() {
+
+    return new Promise((resolve, reject) => {
+
+		console.log("Début de la récupération des données")
+        var init = spawn('python3', [path.join(__dirname,"python/launch.py")])
+        var result = ''
+        init.stdout.on('data', function(data) {
+            result += data.toString()
+			console.log("En cours...")
+        })
+        init.on('close', function(code) {
+            resolve(result)
+        })
+        init.on('error', function(err) { reject(err) })
+    })
+}
 
 
+//Si on a déjà initialisé les données, on n'execute que les scripts nécessaires
+dejaInitialise().then(function(result) {
 
+	if(result == "false\n") {
 
+		initialisation().then(function(result) {
+				console.log("Fin initialisation");
+			})
+			.then(function(result2) {
+				console.log("Gestion problèmes et création graphe");
+				return graphe(result2);
+			})
+			.then(function(result3) {
+				console.log("Lancement du 1er script");
+				return script1(result3);
+			})
+			.then(function(result4) {
+				console.log("Lancement du 2ème script");
+				return script2(result4);
+			})
+			.then(function(result5) {
+				console.log("Les données sont prêtes à être consultées");
+			})
+			.catch(failureCallback);
+	} else {
 
+		script1().then(function(result) {
+			console.log("Lancement du 1er script");
+			})
+			.then(function(result2) {
+				console.log("Lancement du 2ème script");
+				return script2(result2);
+			})
+			.then(function(result5) {
+				console.log("Les données sont prêtes à être consultées");
+			})
+			.catch(failureCallback);
+	}
+})
+.catch(failureCallback);
 
-
-
+function failureCallback(erreur) {
+  console.log("L'opération a échoué avec le message : " + erreur);
+}
 
 app.get('/', function (req, res) {
 
     res.setHeader('Content-Type', 'text/html');
     res.render('accueil.ejs',{liste5elem : liste5elem,liste : liste});
 
-}).get('/listeStructures', function (req, res) {
+})
+.get('/listeStructures', function (req, res) {
 
     res.setHeader('Content-Type', 'text/html');
     res.render('liste.ejs', { liste: liste });
 
 })
-
 .get("/structure/:name", function (req, res) {
         if (res.statusCode != 200) {
             res.send("bruh");
@@ -102,5 +191,5 @@ app.get('/', function (req, res) {
 });
 
 
-app.listen(port, () => console.log(`serveur en ecoute sur le port ${port} !`));
+
 
