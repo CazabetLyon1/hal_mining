@@ -8,6 +8,18 @@ Il est nécessaire d'avoir NodeJS et npm pour lancer le serveur.
 ```bash
 sudo apt-get install nodejs npm
 ```
+Il faut aussi installer MongoDB pour stocker les données et vérifier le statut
+
+```bash
+sudo apt-get install -y mongodb
+sudo systemctl status mongodb
+```
+
+Si besoin, activer le service
+
+```bash
+sudo systemctl start mongodb
+```
 
 ## Composition
 
