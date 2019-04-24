@@ -3,8 +3,10 @@ const fs = require('fs')
 const path = require('path')
 var port = 8080
 
+
 var liste5elem;
 var liste;
+var classementKW = [];
 
 var app = express();
 app.listen(port, () => console.log(`serveur en ecoute sur le port ${port} !`));
@@ -74,6 +76,27 @@ function script2() {
 		pythonProcess2.on('error', function(err) { reject(err) })
 	})
 }
+function scriptKeyWords() {
+
+	return new Promise((resolve, reject) => {
+		
+		const pythonProcess3 = spawn('python3', [path.join(__dirname,"python/keywords.py")]);
+		var result = ''
+
+		pythonProcess3.stdout.on('data', function (data) {
+
+			classementKW=data.toString();
+			
+			console.log(classementKW.toString())
+			
+			
+		});
+		pythonProcess3.on('close', function(code) {
+			resolve(result)
+		});
+		pythonProcess3.on('error', function(err) { reject(err) })
+	})
+}
 
 //Supprime les articles mal renseignés et edite les informations de collaborations
 function graphe() {
@@ -132,7 +155,12 @@ dejaInitialise().then(function(result) {
 				console.log("Lancement du 2ème script");
 				return script2(result4);
 			})
-			.then(function(result5) {
+			.then(function(result5) 
+			{
+				console.log("classement des mots clés...");
+				return scriptKeyWords(result5);
+			})
+			.then(function(result6) {
 				console.log("Les données sont prêtes à être consultées");
 			})
 			.catch(failureCallback);
@@ -145,6 +173,12 @@ dejaInitialise().then(function(result) {
 				console.log("Lancement du 2ème script");
 				return script2(result2);
 			})
+			.then(function(result3) 
+			{
+				console.log("classement des mots clés...");
+				return scriptKeyWords(result3);
+			})
+			
 			.then(function(result5) {
 				console.log("Les données sont prêtes à être consultées");
 			})
@@ -160,7 +194,7 @@ function failureCallback(erreur) {
 app.get('/', function (req, res) {
 
     res.setHeader('Content-Type', 'text/html');
-    res.render('accueil.ejs',{liste5elem : liste5elem,liste : liste});
+    res.render('accueil.ejs',{liste5elem : liste5elem,liste : liste ,keywords: classementKW});
 
 })
 .get('/listeStructures', function (req, res) {
@@ -175,7 +209,7 @@ app.get('/', function (req, res) {
         }
         else {
 			//res.end('Vous êtes à la chambre de l\'étage n°' + req.params.name);
-            res.render("structure.ejs", {struct : req.params.structure, nbPublications : "7"});
+            res.render("structure.ejs", {struct : req.params.name, nbPublications : "7"});
         }
 
 
