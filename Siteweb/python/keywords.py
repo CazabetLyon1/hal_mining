@@ -60,7 +60,7 @@ for x in col.find({"labStructName_s": {'$exists': 1},  "labStructAddress_s": {'$
 
 d= KWClassement()
 res = str(d)
-res = re.sub("(^:)|([\{\}\[\],.\"';\\ [1-9])",'',str(d))
+res = re.sub("(^:)|([\{\}\[\],.\"';\\ [0-9])",'',str(d))
 res = re.sub("^:",'',res)
 res = res.split(':')
 
