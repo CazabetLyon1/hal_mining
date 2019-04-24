@@ -199,20 +199,9 @@ app.get('/', function (req, res) {
 
 })
 .get("/structure/:name", function (req, res) {
-<<<<<<< HEAD
-        if (res.statusCode != 200) {
-            res.send("bruh");
-        }
-        else {
-			//res.end('Vous êtes à la chambre de l\'étage n°' + req.params.name);
-            res.render("structure.ejs", {struct : req.params.name, nbPublications : "7"});
-        }
-
-=======
         
 		res.setHeader('Content-Type', 'text/html');
         res.render("structure.ejs", {struct : req.params.structure, nbPublications : "7"});
->>>>>>> a42e10b22f63f0158a5cdc5ee6ec358ccd795243
 
 })
 .get('/rechercher', function (req, res) {
