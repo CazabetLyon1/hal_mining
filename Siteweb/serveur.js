@@ -45,9 +45,6 @@ function script1() {
 		pythonProcess.stdout.on('data', function (data) {
 			
 			liste5elem = JSON.parse(data.toString());
-			// console.log(liste5elem[0]);
-			// console.log(liste5elem[1]);
-		    // var liste1 = liste.replace("\"", "'");
 			console.log(data.toString());
 		});
 		pythonProcess.on('close', function(code) {
@@ -66,9 +63,7 @@ function script2() {
 		var result = ''
 
 		pythonProcess2.stdout.on('data', function (data) {
-			liste = data.toString();
-			//console.log( typeof liste)
-			//console.log(data.toString());
+			liste = JSON.parse(data.toString());
 		});
 		pythonProcess2.on('close', function(code) {
 			resolve(result)
@@ -204,6 +199,7 @@ app.get('/', function (req, res) {
 
 })
 .get("/structure/:name", function (req, res) {
+<<<<<<< HEAD
         if (res.statusCode != 200) {
             res.send("bruh");
         }
@@ -212,16 +208,18 @@ app.get('/', function (req, res) {
             res.render("structure.ejs", {struct : req.params.name, nbPublications : "7"});
         }
 
+=======
+        
+		res.setHeader('Content-Type', 'text/html');
+        res.render("structure.ejs", {struct : req.params.structure, nbPublications : "7"});
+>>>>>>> a42e10b22f63f0158a5cdc5ee6ec358ccd795243
 
 })
-.get("/rechercher", function (req, resp) {
+.get('/rechercher', function (req, res) {
 
-        if (resp.status == 200) {
-            resp.render("rechercheRes.ejs", { nombre: 42 });
-        }
-        else {
-            console.log("erreur: " + resp.message);
-        }
+        res.setHeader('Content-Type', 'text/html');
+		res.render("rechercheRes.ejs", { liste : liste });
+        
 });
 
 

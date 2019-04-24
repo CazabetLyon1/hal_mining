@@ -29,13 +29,8 @@
     <script>
 
       var liste = <%- JSON.stringify(liste) %>
-        console.log("typeList : " + typeof liste);
-      liste = liste.replace(/"/g, "'");
-      liste = liste.split(", \'");
       liste = liste.sort();
       var taille = Math.trunc(liste.length / 3);
-      console.log(liste.length);
-      console.log(liste[0]);
 
       var ul1 = document.getElementById('listeC1');
       var ul2 = document.getElementById('listeC2');
@@ -43,41 +38,28 @@
       var ul3 = document.getElementById('listeC3');
 
 
-
-
       for (let i = 0; i < taille; i++) {
-        liste[i] = liste[i].replace(/'/g, " ");
-        /*var a = document.createElement('a');
-        ul1.appendChild(li);*/
         ul1.innerHTML += "<a class=\"list-group-item \" href = \"http://localhost:8080/structure/" + liste[i] + "\">" + liste[i] + "</a>";
       }
       for (let i = taille; i < 2 * taille; i++) {
-        liste[i] = liste[i].replace(/'/g, " ");
-        /*var li = document.createElement('li');
-        li.setAttribute('class', 'list-group-item');
-        ul2.appendChild(li);*/
         ul2.innerHTML += "<a class=\"list-group-item \" href = \"http://localhost:8080/structure/" + liste[i] + "\">" + liste[i] + "</a>";
       }
       for (let i = 2 * taille; i < 3 * taille; i++) {
-        liste[i] = liste[i].replace(/'/g, " ");
-        /*var li = document.createElement('li');
-        li.setAttribute('class', 'list-group-item');
-        ul3.appendChild(li);*/
         ul3.innerHTML += "<a class=\"list-group-item \" href = \"http://localhost:8080/structure/" + liste[i] + "\">" + liste[i] + "</a>";
       }
 
-      function fctSearch() {
-        var search = document.getElementById("searchI").value;
+function fctSearch() {
 
-        var result = liste.filter(elem => elem == search);
+        var recherche = document.getElementById('searchI').value;
+	console.log(recherche);
+        var result = liste.filter(elem => elem == recherche);
+	console.log(result);
         for (let i = 0; i < result.length; i++) {
-          var li = document.createElement('li');
-          li.setAttribute('class', 'list-group-item');
-          ul3.appendChild(li);
-          li.innerHTML += "<a href = \"http://localhost:8080/" + result[i] + "\">" + result[i] + "</a>";
+		ul1.innerHTML += "<a class=\"list-group-item \" href = \"http://localhost:8080/structure/" + result[i] + "\">" + result[i] + "</a>";
         }
 
       }
+      
 
     </script>
 
