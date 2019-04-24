@@ -80,11 +80,8 @@ function scriptKeyWords() {
 
 		pythonProcess3.stdout.on('data', function (data) {
 
-			classementKW=data.toString();
-			
-			console.log(classementKW.toString())
-			
-			
+			classementKW=data.toString();		
+					
 		});
 		pythonProcess3.on('close', function(code) {
 			resolve(result)

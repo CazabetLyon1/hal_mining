@@ -62,7 +62,6 @@ d= KWClassement()
 res = str(d)
 res = re.sub("(^:)|([\{\}\[\],.\"';\\ [1-9])",'',str(d))
 res = re.sub("^:",'',res)
-
 res = res.split(':')
 
 #res.pop(0)
