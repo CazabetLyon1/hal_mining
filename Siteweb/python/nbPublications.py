@@ -82,5 +82,5 @@ for arg in sys.argv:
 
     if arg == "liste":
         mutex.acquire()
-        print(liste)
+        print(json.dumps(liste))
         mutex.release()
